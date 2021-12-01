@@ -1,6 +1,17 @@
-const boxEls = document.querySelectorAll('.box');
+const searchEl = document.querySelector('.search');
+const searchInputEl = searchEl.querySelector('input');
 
-boxEls.forEach(function (boxEl, index){
-    boxEl.classList.add(`order-${index + 1}`);
-    console.log(index, boxEl);
+searchEl.addEventListener('click', function() {
+    searchInputEl.focus();
+});
+
+searchInputEl.addEventListener('focus', function(){
+    searchEl.classList.add('focused');
+    searchInputEl.setAttribute('placeholder', '통합검색');
+    
+});
+
+searchInputEl.addEventListener('blur', function(){
+    searchEl.classList.remove('focused');
+    searchInputEl.setAttribute('placeholder', ''); 
 });
