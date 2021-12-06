@@ -17,23 +17,41 @@ searchInputEl.addEventListener('blur', function(){
 });
 
 const badgeEl = document.querySelector('header .badges');
+const toTopEl = document.querySelector('#to-top');
 
 window.addEventListener('scroll', _.throttle(function() {
     console.log(window.scrollY);
+    //배지 숨기기
     if(window.scrollY > 500){
        // gsap.to(요소, 지속시간, 옵션);
        gsap.to(badgeEl, .6, {
            opacity: 0,
            display: 'none'
        });
+       // #to-top요소 보이게 하기
+       gsap.to(toTopEl, .4, {
+        x: 0
+      });
     }else{
+      // 배지 등장
         gsap.to(badgeEl, .6, {
             opacity: 1,
             display: 'block'
         });
+        //#to-top 숨기기
+        gsap.to(toTopEl, .4, {
+          x: 100
+        });
     }
 }, 300));
 // _.trhottle(함수, 시간)
+
+toTopEl.addEventListener('click', function(){
+  gsap.to(window, .7,{
+    scrollTo: 0
+  });
+});
+// 0.7초 동안 window객체를 사용해서 상단 0px로 클릭이 발생하면 만들겠다. 
 
 const fadeEls = document.querySelectorAll('.visual .fade-in');
 fadeEls.forEach(function(fadeEl, index) {
@@ -67,6 +85,17 @@ new Swiper('.notice-line .swiper-container', {
     }
   });
 
+  new Swiper('.awards .swiper-container', {
+    autoplay: true,
+    loop: true,
+    spaceBetween: 30,
+    slidesPerView: 5,
+    navigation: {
+      prevEl: '.awards .swiper-prev',
+      nextEl: '.awards .swiper-next'
+    }
+  });
+
   const promotionEl = document.querySelector('.promotion');
   const promotionToggleBtn = document.querySelector('.toggle-promotion');
   let isHidePromotion = false;
@@ -95,3 +124,18 @@ function floatingObject(selector, delay, size){
 floatingObject('.floating1', 1, 15);
 floatingObject('.floating2', .5, 15);
 floatingObject('.floating3', 1.5, 20);
+
+const spyEls = document.querySelectorAll('section.scroll-spy')
+// 요소들 반복 처리!
+spyEls.forEach(function (spyEl) {
+  new ScrollMagic
+    .Scene({ // 감시할 장면(Scene)을 추가
+      triggerElement: spyEl, // 보여짐 여부를 감시할 요소를 지정
+      triggerHook: .8 // 화면의 80% 지점에서 보여짐 여부 감시
+    })
+    .setClassToggle(spyEl, 'show') // 요소가 화면에 보이면 show 클래스 추가
+    .addTo(new ScrollMagic.Controller()) // 컨트롤러에 장면을 할당(필수!)
+})
+
+const thisYear = document.querySelector('.this-year');
+thisYear.textContent = new Date().getFullYear(); //2021이 여기서 나옴
